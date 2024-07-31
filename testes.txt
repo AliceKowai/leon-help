@@ -1,0 +1,79 @@
+Tipos que devem ser passados ao criar usuarios
+type: USER_C, USER_T, USER_M --- Obrigatorio 
+specialty: HARD, SOFT        --- Opcional apenas para o usuario
+level : JR, PL, SR
+
+--------------------------------  USUARIOS  -----------------------------------------------
+**********  Usuario comum  *******************
+{
+	"name": "Gustavo",
+	"user_name": "Gugas123",
+	"password": "senha123",
+	"sector": "Robotica",
+	"type": "USER_C",
+	"ext": "2346"
+}  
+
+**********  Usuario Tecnico ************
+{
+	"name": "Aline",
+	"user_name": "Alien",
+	"password": "88999353797aA",
+	"sector": "TI",
+	"type": "USER_T",
+	"level": "SR",
+	"specialty": "SOFT",
+	"ext": "2346"
+}
+
+****************  usuario gerente  *****************************
+
+{
+	"name": "Hermeson",
+	"user_name": "Herne",
+	"password": "88999353797aA",
+	"sector": "TI",
+	"type": "USER_M",
+	"level": "SR",
+	"specialty": "SOFT",
+	"ext": "2346"
+}
+
+----------------------------------- CHAMADAS -------------------------------------------
+#####   OBS: É preciso fazer a verificação se o usuario existe!!!
+{
+	"title": "Mouse não funciona",
+	"description": "ele parou de funcionar e não consigo fazer nada pelas as teclas porque sou um pocu retardê",
+	"status": "fechada",
+	"specialty": "SOFT",
+	"priority": "alto",
+	"image": "uma url qualquer",
+	"user_c": {
+		"user_registration": 5
+	}
+}
+
+---------------------------- ATENDIMENTOS ---------------------------------
+OBS: Fazer uma verificação para o tipo de usuario que pode fazer os atendimentos
+	{
+		"level": "JR",
+		"description": "eu coloquei meio kg de fio",
+		"technician_registration": 5,
+		"call_id": 4
+	}
+----------------------------- POSSIVEIS PROBLEMAS ------------------------------
+{
+    "specialty": "HARD",
+    "title": "Erro de inicialização do sistema operacional"
+}
+
+----------------------------- EQUIPAMENTOS --------------------------------------
+{
+  "type": "Mouse",
+  "model": "45003as",
+  "brand": "Alienware",
+  "invoice": "35643234",
+  "status_equipment": "USE", <--- Não Obrigatorio / valor default - "NEW"
+  "maintenance_numbers": 1,
+  "serial_number": "POAURUJ355323"
+}

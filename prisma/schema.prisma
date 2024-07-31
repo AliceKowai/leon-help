@@ -1,0 +1,130 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum UsersType {
+  USER_C
+  USER_T
+  USER_M
+}
+
+enum Specialty {
+  HARD
+  SOFT
+}
+
+enum Level {
+  JR
+  PL
+  SR
+}
+
+enum StatusEquipament {
+  NEW
+  USE
+}
+
+enum Priority {
+  LOW
+  NOR
+  HIG
+  URG
+}
+
+model Users {
+  registration Int        @id @default(autoincrement())
+  name         String
+  user_name    String     @unique
+  password     String
+  sector       String
+  type         UsersType  @default(USER_C) // comum, tecnico, gerente
+  level        Level?
+  specialty    Specialty?
+  ext          String //ramal ---- telefone interno da empresa
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt()
+  call         Call[] //relação Um para muitos
+  service      Service[] //relação Um para muitos
+
+  @@map("users")
+}
+
+model Call {
+  id                     Int       @id @default(autoincrement())
+  title                  String //chamar o valor do titulo da tabela problemas
+  description            String //chamar a descrição da tabela problemas
+  status                 String // aberta, fechada, em andamento
+  specialty              Specialty // hardware, software
+  priority               Priority @default(NOR)
+  technical_name_closure String?
+  technical_closure      Boolean?  @default(false)
+  user_closure           Boolean?  @default(false)
+  createdAt              DateTime  @default(now())
+  updatedAt              DateTime  @updatedAt()
+  user_c                 Users     @relation(fields: [user_registration], references: [registration]) //relação Um para muitos
+  user_registration      Int
+  Service                Service[]
+  imagens                Imagem[]
+
+  @@map("call")
+}
+
+model Imagem {
+  id     Int     @id @default(autoincrement())
+  url    String
+  title  String?
+  file String?
+  Call   Call    @relation(fields: [callId], references: [id])
+  callId Int
+
+  @@map("image_call")
+}
+
+model PossibleProblems {
+  id        Int       @id @default(autoincrement())
+  specialty Specialty @default(HARD) //hardware | software
+  title     String
+
+  @@map("possible_problems")
+}
+
+model Service {
+  id                      Int      @id @default(autoincrement())
+  level                   Level    @default(JR) //jr, pleno, senior 
+  description             String
+  createdAt               DateTime @default(now())
+  updatedAt               DateTime @updatedAt
+  tecnician               Users    @relation(fields: [technician_registration], references: [registration])
+  technician_registration Int
+  call                    Call     @relation(fields: [call_id], references: [id])
+  call_id                 Int
+
+  @@map("service")
+}
+
+model Equipment {
+  id                  Int              @id @default(autoincrement())
+  type                String
+  model               String
+  brand               String
+  invoice             String
+  user_name           String?
+  status_equipment    StatusEquipament @default(NEW)
+  maintenance_numbers Int?
+  serial_number       String
+  createdAt           DateTime         @default(now())
+  updatedAt           DateTime         @updatedAt
+
+  @@map("equipment")
+}
